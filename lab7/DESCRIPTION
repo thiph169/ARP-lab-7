@@ -1,0 +1,27 @@
+Package: lab7
+Type: Package
+Title: Ridge Regression
+Version: 1.0
+Date: 2017-10-09
+Authors@R: as.person(c(
+    "Thi Pham <thiph169@student.liu.se> [cre]",
+    "Somaya Khoda Bakhsh <somkh364@student.liu.se> [aut]"))
+Maintainer: Thi <thiph169@student.liu.se>
+Description: This package provides method to evaluate ridge regression.
+License: CC0
+Depends:
+    R (>= 3.2.3)
+LazyData: true
+Imports:
+  ggplot2,
+  methods,
+  nycflights13,
+  dplyr
+suggest:
+   knitr,
+   testthat
+RoxygenNote: 6.0.1
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
