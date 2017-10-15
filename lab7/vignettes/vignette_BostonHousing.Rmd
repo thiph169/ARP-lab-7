@@ -1,0 +1,130 @@
+---
+title: "Vignette for caret Package"
+author: "Thi Pham and Somaya Khoda Bakhsh"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = NA )
+```
+
+```{r}
+library(mlbench)
+library(caret)
+library(leaps)
+library(lab7)
+data("BostonHousing")
+```
+
+This vignette use `caret` package and `ridgereg()` function to create and predict model for the `BostonHousing` data.
+
+## Divide the BostonHousing data (or your own API data) into a test and training dataset using the caret package.
+
+```{r}
+data("BostonHousing")
+names(BostonHousing)
+train_index <- caret::createDataPartition(BostonHousing$age, p = .75,
+                                         list = FALSE,
+                                         times= 1)
+train_data <- BostonHousing[train_index, ]
+test_data <- BostonHousing[-train_index, ]
+
+
+head(train_data)
+head(test_data)
+```
+
+
+## Fit a linear regression model and with a linear regression model with forward selection of covariates on the training datasets.   
+
+Fitting a linear model with method = leapForward on the training dataset.
+
+```{r}
+lflmGrid <- expand.grid(nvmax=1:(ncol(train_data)-1))
+
+ridge <- caret::train(crim~.,
+                      data = train_data,
+                      method='leapForward',
+                      tuneGrid = lflmGrid
+)
+print(ridge)
+```
+
+## Evaluate the performance of this model on the training dataset.
+
+since we have got a low RMSE,we think that our model has good perfomance with nvmax(number of predictors).    
+
+
+## Fit a ridge regression model using your ridgereg() function to the training dataset for different values of lambda.
+
+```{r}
+ridge <- lab7:::ridgereg(crim ~ zn + indus + rad + medv,
+                  data = train_data,
+                  lamda = 0.1 
+                  )
+              
+ridge$print()
+```
+
+## Find the best hyperparameter value for lambda using 10-fold cross-validation on the training set.  
+
+```{r, echo = FALSE}
+caridge <- function(X){
+  data("BostonHousing")
+  names(BostonHousing)
+  dat <- X
+  train_index <- caret:::createDataPartition(dat$age, p = .75,
+                                           list = FALSE,
+                                           times= 1)
+  train_data <- dat[train_index, ]
+  test_data <- dat[-train_index, ]
+  res <- c(train_data, test_data)
+  fitControl <- caret:::trainControl(method = "cv",
+                             number = 10)
+  # Set seq of lambda to test
+  lamdaGrid <- expand.grid(lamda = c(0,.01,.02,.03,.04))
+  ridge <- caret:::train(crim ~ .,
+                 data = train_data,
+                 method='ridge',
+                 trControl = fitControl,
+                                tuneGrid = lamdaGrid,
+                 preProcess=c('center', 'scale')
+  )
+  predict(ridge$finalModel, type='coef', mode='norm')$coefficients[13,]
+  ridge.pred <- predict(ridge, test_data)
+  avgErrror<-2*sqrt(mean(ridge.pred - test_data$crim)^2)
+  return(ridge)
+}
+```
+
+
+The best value of lamda for a 10-fold cross validation can be found in the output.  
+
+
+##Evaluate the performance of all three models on the test dataset.
+
+By evaluating three models of 
+
+* Linear Regression
+* Linear Regression with leapForward
+* Ridge Regression
+
+Ridge regression on training set with best value of lambda gives lower RMSE.
+
+
+
+
+
+
+
+
+
+
+
+
+

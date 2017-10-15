@@ -5,15 +5,28 @@
 \alias{ridgereg-class}
 \alias{ridgereg}
 \title{Ridge Regression}
+\value{
+Regression coefficent beta hat and fitted values.
+}
 \description{
-Returns the result of the ridge regression
+Ridge Regression
 }
 \section{Fields}{
 
 \describe{
-\item{\code{formula}}{formula}
+\item{\code{formula}}{formula.}
 
-\item{\code{data}}{data.frame}
+\item{\code{data}}{data.frame.}
+
+\item{\code{lamda}}{numeric.}
+
+\item{\code{beta_hat_ridge}}{matrix.}
+
+\item{\code{y_hat}}{numeric.}
+
+\item{\code{coef_ridge}}{numeric.}
+
+\item{\code{data_name}}{character.}
 }}
 
 

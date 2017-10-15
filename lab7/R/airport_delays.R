@@ -1,11 +1,11 @@
-#' This function creates a plot that visualizes the mean delay of fights 
-#' for different airports by longitude and latitude.
-#' 
-#' @import dplyr
-#' @import nycflights13
-#' @return A ggplot2 
+#' Visualize Airport Delays
+#'
+#' @return A ggplot2
 #' @export
-
+#' 
+ 
+# This function creates a plot that visualizes the mean delay of fights 
+# for different airports by longitude and latitude.
 
 visualize_airport_delays<-function(){
   # def: A delay is the arr_delay and the airport that accounts for the delay is the destination airport. 
@@ -15,7 +15,7 @@ visualize_airport_delays<-function(){
   
   flights_r<-dplyr::select(flights,dep_delay,flight,dest)
   airports_r<-dplyr::select(airports,faa,lat,lon)
-  # rm(airports, flights)
+ 
   airports_r<-dplyr::rename(airports_r, dest=faa)
   
   Db<-dplyr::left_join( flights_r,airports_r, "dest")
@@ -30,7 +30,7 @@ visualize_airport_delays<-function(){
   Db<-dplyr::mutate(Db,newDelay=reset_early_arrivals(dep_delay))
   Db<-dplyr::select(Db,-dep_delay)
   
-  # avgDelays <- Db %>% group_by(dest) %>% dplyr::summarise(avg=mean(newDelay, na.rm = TRUE))
+ 
   avgDelays <- dplyr::summarise(dplyr::group_by(Db, dest),  avg=mean(newDelay, na.rm = TRUE))
   
   Final <- dplyr::left_join(avgDelays, Db, "dest")
@@ -39,11 +39,11 @@ visualize_airport_delays<-function(){
   Final<-as.data.frame(Final)
   
   p1<-ggplot2::ggplot(data=Final) + ggplot2::aes(x=lon,y=lat,size=avg) +
-    ggplot2::scale_size_area(max_size = 10)+ ggplot2::geom_point(shape=21,col="blue")
-
-  plot(p1)
+    ggplot2::scale_size_area(max_size = 10)+ ggplot2::geom_point(shape=21,col="blue") 
   
- 
+  plot(p1)
   
 }
 
+# example
+# visualize_airport_delays()

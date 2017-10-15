@@ -1,18 +1,24 @@
 #' Ridge Regression
+#'
+#' @field formula formula. 
+#' @field data data.frame. 
+#' @field lamda numeric. 
+#' @field beta_hat_ridge matrix. 
+#' @field y_hat numeric. 
+#' @field coef_ridge numeric. 
+#' @field data_name character. 
 #' 
-#' @field formula formula
-#' @field data data.frame
-#' @description Returns the result of the ridge regression
+#' @return Regression coefficent beta hat and fitted values.
+#' 
 #' @export 
-#' @exportClass ridgereg
+#' 
 #' @import methods
-
-#
+#'
+# examples
 # data(iris)
-# ridgereg$new(Petal.Length~Species, data=iris)$print()
-# ridgereg$new(Petal.Length~Species, data=iris)$pred()
-# ridgereg$new(Petal.Length~Species, data=iris)$coef()
-
+# ridgereg$new(Petal.Length~Species, data = iris, lamda = 0)$print()
+# ridgereg$new(Petal.Length~Species, data = iris, lamda = 0)$predict()
+# ridgereg$new(Petal.Length~Species, data = iris, lamda = 0)$coef()
 
 ridgereg <- setRefClass(
      Class = "ridgereg",
@@ -26,7 +32,7 @@ ridgereg <- setRefClass(
        data_name = "character"),
     
       methods = list(
-        initialize = function(formula, data, lamda = 0, normalize = FALSE){
+        initialize = function(formula, data, lamda, normalize = FALSE){
           formula <<- formula
           data <<- data
           lamda <<- lamda
@@ -96,3 +102,4 @@ ridgereg <- setRefClass(
           
       )
 )
+

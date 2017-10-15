@@ -11,12 +11,15 @@ Description: This package provides method to evaluate ridge regression.
 License: CC0
 Depends:
     R (>= 3.2.3)
-LazyData: true
 Imports:
   ggplot2,
   methods,
   nycflights13,
-  dplyr
+  dplyr,
+  pryr,
+  caret,
+  leaps,
+  mlbench
 suggest:
    knitr,
    testthat

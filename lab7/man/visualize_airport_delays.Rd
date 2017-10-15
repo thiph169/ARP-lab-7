@@ -2,8 +2,7 @@
 % Please edit documentation in R/airport_delays.R
 \name{visualize_airport_delays}
 \alias{visualize_airport_delays}
-\title{This function creates a plot that visualizes the mean delay of fights 
-for different airports by longitude and latitude.}
+\title{Visualize Airport Delays}
 \usage{
 visualize_airport_delays()
 }
@@ -11,6 +10,5 @@ visualize_airport_delays()
 A ggplot2
 }
 \description{
-This function creates a plot that visualizes the mean delay of fights 
-for different airports by longitude and latitude.
+Visualize Airport Delays
 }

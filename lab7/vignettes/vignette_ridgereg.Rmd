@@ -1,0 +1,74 @@
+---
+title: "Vignette of Lab7 package"
+author: "Thi and Somaya"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This package consists of `ridgereg` function which performs ridge regression. The function takes a formula object, dataset and pamameter lamda and return a ridgered object. 
+
+## How to install and load
+
+### Install 
+
+To install the package [devtools] in [RStudio](https://www.rstudio.com/), you can just run the following command
+```{r, eval = FALSE}
+install.packages("devtools")
+```
+
+
+After the installation of `devtools`, we can simply run the following command in the RStudio console
+```{r, eval = FALSE}
+devtools::install_github(repo = "thiph169/ARP-lab-7/", 
+                         build_vignette = TRUE)
+```
+
+### Load
+
+After the installation is successful,load the package using
+
+```{r}
+library(lab7)
+data(iris)
+```
+
+## Usage
+
+The `ridgereg` functions contains the methods `print`, `predict`, and `coef`. Below are examples using `iris` data set
+
+
+### print()  
+
+this method prints out the coefficients and coefficient names, similar as done by the `lm` class.
+Example:   
+
+```{r, echo=FALSE}
+lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$print()
+
+```
+
+### predict()  
+
+This method returns the predicted values y^, it should be able to predict for new dataset similar to the `predict()` function for the `lm()` package.  
+
+Example:   
+
+```{r, echo=FALSE}
+lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$predict()
+```
+
+### coef()  
+
+This method returns the ridge regression coefficients.   
+
+Example:    
+
+```{r, echo=FALSE}
+lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$coef()
+```
+
+
