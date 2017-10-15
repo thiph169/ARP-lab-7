@@ -103,6 +103,8 @@ caridge <- function(X){
 ```
 
 ```{r}
+library(mlbench)
+data("BostonHousing")
 caridge(BostonHousing)
 ```
 
