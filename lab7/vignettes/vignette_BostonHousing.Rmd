@@ -102,11 +102,34 @@ caridge <- function(X){
 }
 ```
 
-```{r}
-library(mlbench)
-data("BostonHousing")
-caridge(BostonHousing)
-```
+library(mlbench)  
+data("BostonHousing")  
+caridge(BostonHousing)  
+
+Loading required package: lars  
+Loaded lars 1.2  
+
+Ridge Regression   
+
+382 samples  
+ 13 predictor  
+
+Pre-processing: centered (13), scaled (13)   
+Resampling: Cross-Validated (10 fold)   
+Summary of sample sizes: 345, 342, 343, 345, 344, 344, ...   
+Resampling results across tuning parameters:  
+
+  lambda  RMSE      Rsquared   MAE       
+  0.00    6.580051  0.5511862  3.290037  
+  0.01    6.568754  0.5531929  3.248552  
+  0.02    6.564320  0.5542507  3.226374  
+  0.03    6.563836  0.5547879  3.213642  
+  0.04    6.565886  0.5550105  3.207268  
+
+RMSE was used to select the optimal model using  the smallest value.  
+
+The final value used for the model was lambda = 0.03.  
+
 
 The best value of lamda for a 10-fold cross validation can be found in the output.  
 
