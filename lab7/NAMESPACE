@@ -2,4 +2,5 @@
 
 export(visualize_airport_delays)
 exportClasses(ridgereg)
+exportClasses(ridgereg_QR)
 import(methods)

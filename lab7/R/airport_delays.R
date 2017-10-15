@@ -3,6 +3,7 @@
 #' @return A ggplot2
 #' @export
 #' 
+#' 
  
 # This function creates a plot that visualizes the mean delay of fights 
 # for different airports by longitude and latitude.

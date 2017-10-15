@@ -114,20 +114,20 @@ test_data &lt;-<span class="st"> </span>BostonHousing[-train_index, ]
 7 12.43 22.9
 9 29.93 16.5</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(test_data)</code></pre></div>
-<pre><code>      crim   zn indus chas   nox    rm   age    dis rad tax ptratio      b
-1  0.00632 18.0  2.31    0 0.538 6.575  65.2 4.0900   1 296    15.3 396.90
-6  0.02985  0.0  2.18    0 0.458 6.430  58.7 6.0622   3 222    18.7 394.12
-8  0.14455 12.5  7.87    0 0.524 6.172  96.1 5.9505   5 311    15.2 396.90
-15 0.63796  0.0  8.14    0 0.538 6.096  84.5 4.4619   4 307    21.0 380.02
-16 0.62739  0.0  8.14    0 0.538 5.834  56.5 4.4986   4 307    21.0 395.62
-24 0.98843  0.0  8.14    0 0.538 5.813 100.0 4.0952   4 307    21.0 394.54
+<pre><code>      crim   zn indus chas   nox    rm  age    dis rad tax ptratio      b
+1  0.00632 18.0  2.31    0 0.538 6.575 65.2 4.0900   1 296    15.3 396.90
+6  0.02985  0.0  2.18    0 0.458 6.430 58.7 6.0622   3 222    18.7 394.12
+8  0.14455 12.5  7.87    0 0.524 6.172 96.1 5.9505   5 311    15.2 396.90
+12 0.11747 12.5  7.87    0 0.524 6.009 82.9 6.2267   5 311    15.2 396.90
+16 0.62739  0.0  8.14    0 0.538 5.834 56.5 4.4986   4 307    21.0 395.62
+21 1.25179  0.0  8.14    0 0.538 5.570 98.1 3.7979   4 307    21.0 376.57
    lstat medv
 1   4.98 24.0
 6   5.21 28.7
 8  19.15 27.1
-15 10.26 18.2
+12 13.27 18.9
 16  8.47 19.9
-24 19.88 14.5</code></pre>
+21 21.02 13.6</code></pre>
 </div>
 <div id="fit-a-linear-regression-model-and-with-a-linear-regression-model-with-forward-selection-of-covariates-on-the-training-datasets." class="section level2">
 <h2>Fit a linear regression model and with a linear regression model with forward selection of covariates on the training datasets.</h2>
@@ -151,19 +151,19 @@ Summary of sample sizes: 382, 382, 382, 382, 382, 382, ...
 Resampling results across tuning parameters:
 
   nvmax  RMSE      Rsquared   MAE     
-   1     6.937099  0.3900115  2.860448
-   2     6.947046  0.3931509  3.038457
-   3     6.943661  0.4011700  3.114818
-   4     6.964495  0.3984835  3.159081
-   5     6.964203  0.4006044  3.211938
-   6     6.937374  0.4053428  3.268011
-   7     6.912710  0.4099530  3.305477
-   8     6.907287  0.4117240  3.334160
-   9     6.921040  0.4107019  3.374166
-  10     6.925734  0.4104617  3.379398
-  11     6.929742  0.4103796  3.389858
-  12     6.929107  0.4104235  3.389137
-  13     6.928816  0.4105504  3.391415
+   1     4.944076  0.5232577  2.262389
+   2     4.808162  0.5497050  2.401664
+   3     4.805243  0.5507182  2.396714
+   4     4.809952  0.5505463  2.420051
+   5     4.805136  0.5518443  2.432393
+   6     4.794263  0.5538806  2.437165
+   7     4.784627  0.5557604  2.442916
+   8     4.781234  0.5562618  2.435575
+   9     4.782076  0.5562268  2.440162
+  10     4.791324  0.5544545  2.443353
+  11     4.792774  0.5540735  2.449431
+  12     4.795919  0.5535254  2.449185
+  13     4.795201  0.5535999  2.449621
 
 RMSE was used to select the optimal model using  the smallest value.
 The final value used for the model was nvmax = 8.</code></pre>
@@ -186,10 +186,32 @@ ridgereg(formula = crim ~ zn + indus + rad + medv, data = train_data)
 
 Coefficients:
 (Intercept) zn indus rad medv
-2.256196 0.01808601 0.002100852 0.5601781 -0.1861133</code></pre>
+0.6895861 0.01155067 0.02084742 0.5204359 -0.1181442</code></pre>
 </div>
 <div id="find-the-best-hyperparameter-value-for-lambda-using-10-fold-cross-validation-on-the-training-set." class="section level2">
 <h2>Find the best hyperparameter value for lambda using 10-fold cross-validation on the training set.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">caridge</span>(BostonHousing)</code></pre></div>
+<pre><code>Loading required package: lars</code></pre>
+<pre><code>Loaded lars 1.2</code></pre>
+<pre><code>Ridge Regression 
+
+382 samples
+ 13 predictor
+
+Pre-processing: centered (13), scaled (13) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 343, 346, 343, 343, 343, 344, ... 
+Resampling results across tuning parameters:
+
+  lambda  RMSE      Rsquared   MAE     
+  0.00    5.565867  0.5850268  2.761158
+  0.01    5.552938  0.5863975  2.736069
+  0.02    5.546793  0.5870144  2.722997
+  0.03    5.544763  0.5872129  2.716923
+  0.04    5.545430  0.5871637  2.715064
+
+RMSE was used to select the optimal model using  the smallest value.
+The final value used for the model was lambda = 0.03.</code></pre>
 <p>The best value of lamda for a 10-fold cross validation can be found in the output.</p>
 </div>
 <div id="evaluate-the-performance-of-all-three-models-on-the-test-dataset." class="section level2">

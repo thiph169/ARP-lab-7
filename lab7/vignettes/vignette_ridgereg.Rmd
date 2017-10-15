@@ -71,4 +71,16 @@ Example:
 lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$coef()
 ```
 
+### ridge regression using the QR decomposition
+
+We tested the ridge regression using the QR decomposition but we obtained incorrect result.
+
+Below are the results we got for `print` function:
+
+```{r, echo=FALSE}
+lab7:::ridgereg_QR$new(Petal.Length~Species, data=iris, lamda=0)$print_QR()
+```
+
+
+
 

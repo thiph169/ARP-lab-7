@@ -132,6 +132,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>##       (Intercept) Speciesversicolor  Speciesvirginica 
 ##             1.462             2.798             4.090</code></pre>
 </div>
+<div id="ridge-regression-using-the-qr-decomposition" class="section level3">
+<h3>ridge regression using the QR decomposition</h3>
+<p>We tested the ridge regression using the QR decomposition but we obtained incorrect result.</p>
+<p>Below are the results we got for <code>print</code> function:</p>
+<pre><code>## 
+## Call:
+## ridgereg_QR(formula = Petal.Length ~ Species, data = iris)
+## 
+## Coefficients:
+## Speciesversicolor Speciesvirginica
+## 1.321194 1.931266</code></pre>
+</div>
 </div>
 
 

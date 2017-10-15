@@ -87,12 +87,12 @@ caridge <- function(X){
   fitControl <- caret:::trainControl(method = "cv",
                              number = 10)
   # Set seq of lambda to test
-  lamdaGrid <- expand.grid(lamda = c(0,.01,.02,.03,.04))
+  lambdaGrid <- expand.grid(lambda = c(0,.01,.02,.03,.04))
   ridge <- caret:::train(crim ~ .,
                  data = train_data,
                  method='ridge',
                  trControl = fitControl,
-                                tuneGrid = lamdaGrid,
+                                tuneGrid = lambdaGrid,
                  preProcess=c('center', 'scale')
   )
   predict(ridge$finalModel, type='coef', mode='norm')$coefficients[13,]
@@ -102,6 +102,9 @@ caridge <- function(X){
 }
 ```
 
+```{r}
+caridge(BostonHousing)
+```
 
 The best value of lamda for a 10-fold cross validation can be found in the output.  
 
