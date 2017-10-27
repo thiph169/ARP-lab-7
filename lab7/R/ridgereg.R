@@ -2,7 +2,7 @@
 #'
 #' @field formula formula. 
 #' @field data data.frame. 
-#' @field lamda numeric. 
+#' @field lambda numeric. 
 #' @field beta_hat_ridge matrix. 
 #' @field y_hat numeric. 
 #' @field coef_ridge numeric. 
@@ -16,26 +16,26 @@
 #'
 # examples
 # data(iris)
-# ridgereg$new(Petal.Length~Species, data = iris, lamda = 0)$print()
-# ridgereg$new(Petal.Length~Species, data = iris, lamda = 0)$predict()
-# ridgereg$new(Petal.Length~Species, data = iris, lamda = 0)$coef()
+# ridgereg$new(Petal.Length~Species, data = iris, lambda = 0)$print()
+# ridgereg$new(Petal.Length~Species, data = iris, lambda = 0)$predict()
+# ridgereg$new(Petal.Length~Species, data = iris, lambda = 0)$coef()
 
 ridgereg <- setRefClass(
      Class = "ridgereg",
      fields = list(
        formula = "formula",
        data = "data.frame",
-       lamda = "numeric",
+       lambda = "numeric",
        beta_hat_ridge = "matrix",
        y_hat = "numeric",
        coef_ridge ="numeric",
        data_name = "character"),
     
       methods = list(
-        initialize = function(formula, data, lamda, normalize = FALSE){
+        initialize = function(formula, data, lambda, normalize = FALSE){
           formula <<- formula
           data <<- data
-          lamda <<- lamda
+          lambda <<- lambda
           
           # Define matrix
           X <- model.matrix(formula, data)
@@ -52,7 +52,7 @@ ridgereg <- setRefClass(
           identical_mat <- matrix(c(0),nrow = ncol(X),ncol = ncol(X))
           
           #Contruct a diagonal matrix
-          diag(identical_mat) <- sqrt(lamda)
+          diag(identical_mat) <- sqrt(lambda)
           y_matrix <- as.matrix(y)
           
           #Calculate beta_hat_ridge

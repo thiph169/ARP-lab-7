@@ -7,7 +7,7 @@
 visualize_airport_delays()
 }
 \value{
-A ggplot2
+plot
 }
 \description{
 Visualize Airport Delays

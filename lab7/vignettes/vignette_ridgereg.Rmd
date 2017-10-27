@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This package consists of `ridgereg` function which performs ridge regression. The function takes a formula object, dataset and pamameter lamda and return a ridgered object. 
+This package consists of `ridgereg` function which performs ridge regression. The function takes a formula object, dataset and pamameter lambda and return a ridgered object. 
 
 ## How to install and load
 
@@ -47,7 +47,7 @@ this method prints out the coefficients and coefficient names, similar as done b
 Example:   
 
 ```{r, echo=FALSE}
-lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$print()
+lab7:::ridgereg$new(Petal.Length~Species, data=iris, lambda=0)$print()
 
 ```
 
@@ -58,7 +58,7 @@ This method returns the predicted values y^, it should be able to predict for ne
 Example:   
 
 ```{r, echo=FALSE}
-lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$predict()
+lab7:::ridgereg$new(Petal.Length~Species, data=iris, lambda=0)$predict()
 ```
 
 ### coef()  
@@ -68,7 +68,7 @@ This method returns the ridge regression coefficients.
 Example:    
 
 ```{r, echo=FALSE}
-lab7:::ridgereg$new(Petal.Length~Species, data=iris, lamda=0)$coef()
+lab7:::ridgereg$new(Petal.Length~Species, data=iris, lambda=0)$coef()
 ```
 
 ### ridge regression using the QR decomposition
@@ -77,9 +77,6 @@ We tested the ridge regression using the QR decomposition but we obtained incorr
 
 Below are the results we got for `print` function:
 
-```{r, echo=FALSE}
-lab7:::ridgereg_QR$new(Petal.Length~Species, data=iris, lamda=0)$print_QR()
-```
 
 
 

@@ -2,7 +2,7 @@
 #'
 #' @field formula formula. 
 #' @field data data.frame. 
-#' @field lamda numeric. 
+#' @field lambda numeric. 
 #' @field data_name character. 
 #' @field identity_matrix matrix. 
 #' @field beta_hat_ridge_QR matrix. 
@@ -14,16 +14,16 @@
 #'
 #Examples:
 # data(iris)
-# ridgereg_QR$new(Petal.Length~Species,data=iris,lamda=0)$print_QR()
-# ridgereg_QR$new(Petal.Length~Species,data=iris,lamda=0)$predict_QR()
-# ridgereg_QR$new(Petal.Length~Species,data=iris,lamda=0)$coef_QR()
+# ridgereg_QR$new(Petal.Length~Species,data=iris,lambda=0)$print_QR()
+# ridgereg_QR$new(Petal.Length~Species,data=iris,lambda=0)$predict_QR()
+# ridgereg_QR$new(Petal.Length~Species,data=iris,lambda=0)$coef_QR()
 
 ridgereg_QR <- setRefClass( 
   Class = "ridgereg_QR",
   fields = list(
     formula = "formula",
     data = "data.frame",
-    lamda = "numeric",
+    lambda = "numeric",
     data_name = "character",
     identity_matrix="matrix",
     beta_hat_ridge_QR ="matrix",
@@ -31,11 +31,11 @@ ridgereg_QR <- setRefClass(
     ),
   
   methods=list(
-    initialize = function(formula, data, lamda, normalise = TRUE){
+    initialize = function(formula, data, lambda, normalise = TRUE){
       formula  <<- formula
       data <<- data
       data_name <<- deparse(substitute(data))
-      lamda <<- lamda
+      lambda <<- lambda
       
       x <- model.matrix(formula, data)
       x <- ((x[,-1]-mean(x[,-1])) / sd(x[,-1]))
@@ -51,8 +51,9 @@ ridgereg_QR <- setRefClass(
       QR_ridge<- qr(x_norm)
       R <- qr.R(QR_ridge)
       Q <- qr.Q(QR_ridge)
+      RR<- ((R %*% t(Q) %*% Q) + lambda *(t(Q) %*% Q %*% solve(t(R))))
       
-      beta_hat_ridge_QR <<- solve((t(R) %*% R) + lamda*identity_matrix) %*% t(Q %*% R) %*% y
+      beta_hat_ridge_QR <<- backsolve(RR, crossprod(Q,y))
       y_hat_ridge_QR <<- (x_norm %*% beta_hat_ridge_QR)
     },     
  
@@ -87,4 +88,5 @@ ridgereg_QR <- setRefClass(
     
   )
 )
+
 

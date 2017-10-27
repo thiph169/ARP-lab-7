@@ -18,7 +18,7 @@ Ridge Regression - QR decomposition method
 
 \item{\code{data}}{data.frame.}
 
-\item{\code{lamda}}{numeric.}
+\item{\code{lambda}}{numeric.}
 
 \item{\code{data_name}}{character.}
 

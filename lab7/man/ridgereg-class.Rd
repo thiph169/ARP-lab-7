@@ -18,7 +18,7 @@ Ridge Regression
 
 \item{\code{data}}{data.frame.}
 
-\item{\code{lamda}}{numeric.}
+\item{\code{lambda}}{numeric.}
 
 \item{\code{beta_hat_ridge}}{matrix.}
 

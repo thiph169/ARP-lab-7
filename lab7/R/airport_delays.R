@@ -1,13 +1,14 @@
+library(nycflights13)
+library(ggplot2)
+library(dplyr)
+
 #' Visualize Airport Delays
 #'
-#' @return A ggplot2
+#' @return plot
 #' @export
 #' 
 #' 
  
-# This function creates a plot that visualizes the mean delay of fights 
-# for different airports by longitude and latitude.
-
 visualize_airport_delays<-function(){
   # def: A delay is the arr_delay and the airport that accounts for the delay is the destination airport. 
   

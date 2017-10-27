@@ -23,7 +23,7 @@ data("BostonHousing")
 
 This vignette use `caret` package and `ridgereg()` function to create and predict model for the `BostonHousing` data.
 
-## Divide the BostonHousing data (or your own API data) into a test and training dataset using the caret package.
+##1. Divide the BostonHousing data (or your own API data) into a test and training dataset using the caret package.
 
 ```{r}
 data("BostonHousing")
@@ -40,10 +40,22 @@ head(test_data)
 ```
 
 
-## Fit a linear regression model and with a linear regression model with forward selection of covariates on the training datasets.   
+##2. Fit a linear regression model and with a linear regression model with forward selection of covariates on the training datasets.   
 
-Fitting a linear model with method = leapForward on the training dataset.
+Fit a linear regression model: 
 
+```{r}
+ridge <- caret::train(crim~.,
+                      data = train_data,
+                      method='lm',
+                      trControl = trainControl(method = "cv")
+)
+
+print(ridge)
+```
+
+
+Fitting a linear model with method = leapForward on the training dataset :
 ```{r}
 lflmGrid <- expand.grid(nvmax=1:(ncol(train_data)-1))
 
@@ -55,86 +67,72 @@ ridge <- caret::train(crim~.,
 print(ridge)
 ```
 
-## Evaluate the performance of this model on the training dataset.
+##3. Evaluate the performance of this model on the training dataset.
 
-since we have got a low RMSE,we think that our model has good perfomance with nvmax(number of predictors).    
+Since the RMSE & MAE is low on training of lm model compared to leapForward lm where model has good perfomance with nvmax(number of predictors) we can conclude that LM is better than leapforward LM.   
 
 
-## Fit a ridge regression model using your ridgereg() function to the training dataset for different values of lambda.
+##4. Fit a ridge regression model using your ridgereg() function to the training dataset for different values of lambda.
+
 
 ```{r}
-ridge <- lab7:::ridgereg(crim ~ zn + indus + rad + medv,
-                  data = train_data,
-                  lamda = 0.1 
-                  )
-              
-ridge$print()
-```
+ridge <- list(type="Regression", 
+              library="lab7",
+              loop=NULL,
+              prob=NULL)
 
-## Find the best hyperparameter value for lambda using 10-fold cross-validation on the training set.  
+ridge$parameters <- data.frame(parameter="lambda",
+                               class="numeric",
+                               label="lambda")
 
-```{r, echo = FALSE}
-caridge <- function(X){
-  data("BostonHousing")
-  names(BostonHousing)
-  dat <- X
-  train_index <- caret:::createDataPartition(dat$age, p = .75,
-                                           list = FALSE,
-                                           times= 1)
-  train_data <- dat[train_index, ]
-  test_data <- dat[-train_index, ]
-  res <- c(train_data, test_data)
-  fitControl <- caret:::trainControl(method = "cv",
-                             number = 10)
-  # Set seq of lambda to test
-  lambdaGrid <- expand.grid(lambda = c(0,.01,.02,.03,.04))
-  ridge <- caret:::train(crim ~ .,
-                 data = train_data,
-                 method='ridge',
-                 trControl = fitControl,
-                                tuneGrid = lambdaGrid,
-                 preProcess=c('center', 'scale')
-  )
-  predict(ridge$finalModel, type='coef', mode='norm')$coefficients[13,]
-  ridge.pred <- predict(ridge, test_data)
-  avgErrror<-2*sqrt(mean(ridge.pred - test_data$crim)^2)
-  return(ridge)
+
+ridge$grid <- function (x, y, len = NULL, search = "grid"){
+  data.frame(lambda = lambda)
+} 
+
+ridge$fit <- function (x, y, wts, param, lev, last, classProbs, ...) {
+  dat <- if (is.data.frame(x)) 
+    x
+  else as.data.frame(x)
+  dat$.outcome <- y
+  out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, normalize=normalize, ...)
+  
+  out
 }
+
+ridge$predict <- function (modelFit, newdata, submodels = NULL) {
+  if (!is.data.frame(newdata)) 
+    newdata <- as.data.frame(newdata)
+  newdata <- scale(newdata)
+  modelFit$predict(newdata)
+}
+
 ```
 
-library(mlbench)  
-data("BostonHousing")  
-caridge(BostonHousing)  
 
-Loading required package: lars  
-Loaded lars 1.2  
+##5.  Find the best hyperparameter value for lambda using 10-fold cross-validation on the training set.  
 
-Ridge Regression   
+```{r,eval=FALSE}
+library(MASS)
+fitControl <- caret::trainControl(method = "cv",
+                                  number = 10)
+lambdaGrid <- expand.grid(lambda = c(0,.01,.02,.03,.04))
+ridge <- caret::train(crim~.,
+                      data = train_data,
+                      method='ridge',
+                      trControl = fitControl,
+                      tuneGrid = lambdaGrid,
+                      preProcess=c('center', 'scale')
+)
+predict(ridge$finalModel, type='coef', mode='norm')$coefficients[13,]
+ridge.pred <- predict(ridge, test_data)
+avgErrror<-2*sqrt(mean(ridge.pred - test_data$crim)^2)
+print(ridge)
 
-382 samples  
- 13 predictor  
+```
+So, **the best hyperparameter value for lambda is 0.03**
 
-Pre-processing: centered (13), scaled (13)   
-Resampling: Cross-Validated (10 fold)   
-Summary of sample sizes: 345, 342, 343, 345, 344, 344, ...   
-Resampling results across tuning parameters:  
-
-  lambda  RMSE      Rsquared   MAE       
-  0.00    6.580051  0.5511862  3.290037  
-  0.01    6.568754  0.5531929  3.248552  
-  0.02    6.564320  0.5542507  3.226374  
-  0.03    6.563836  0.5547879  3.213642  
-  0.04    6.565886  0.5550105  3.207268  
-
-RMSE was used to select the optimal model using  the smallest value.  
-
-The final value used for the model was lambda = 0.03.  
-
-
-The best value of lamda for a 10-fold cross validation can be found in the output.  
-
-
-##Evaluate the performance of all three models on the test dataset.
+##6. Evaluate the performance of all three models on the test dataset.
 
 By evaluating three models of 
 

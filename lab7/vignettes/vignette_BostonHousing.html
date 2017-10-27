@@ -12,7 +12,7 @@
 
 <meta name="author" content="Thi Pham and Somaya Khoda Bakhsh" />
 
-<meta name="date" content="2017-10-15" />
+<meta name="date" content="2017-10-27" />
 
 <title>Vignette for caret Package</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Vignette for caret Package</h1>
 <h4 class="author"><em>Thi Pham and Somaya Khoda Bakhsh</em></h4>
-<h4 class="date"><em>2017-10-15</em></h4>
+<h4 class="date"><em>2017-10-27</em></h4>
 
 
 
@@ -86,7 +86,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">data</span>(<span class="st">&quot;BostonHousing&quot;</span>)</code></pre></div>
 <p>This vignette use <code>caret</code> package and <code>ridgereg()</code> function to create and predict model for the <code>BostonHousing</code> data.</p>
 <div id="divide-the-bostonhousing-data-or-your-own-api-data-into-a-test-and-training-dataset-using-the-caret-package." class="section level2">
-<h2>Divide the BostonHousing data (or your own API data) into a test and training dataset using the caret package.</h2>
+<h2>1. Divide the BostonHousing data (or your own API data) into a test and training dataset using the caret package.</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;BostonHousing&quot;</span>)
 <span class="kw">names</span>(BostonHousing)</code></pre></div>
 <pre><code> [1] &quot;crim&quot;    &quot;zn&quot;      &quot;indus&quot;   &quot;chas&quot;    &quot;nox&quot;     &quot;rm&quot;      &quot;age&quot;    
@@ -99,39 +99,61 @@ test_data &lt;-<span class="st"> </span>BostonHousing[-train_index, ]
 
 
 <span class="kw">head</span>(train_data)</code></pre></div>
-<pre><code>     crim   zn indus chas   nox    rm  age    dis rad tax ptratio      b
-1 0.00632 18.0  2.31    0 0.538 6.575 65.2 4.0900   1 296    15.3 396.90
-2 0.02731  0.0  7.07    0 0.469 6.421 78.9 4.9671   2 242    17.8 396.90
-3 0.02729  0.0  7.07    0 0.469 7.185 61.1 4.9671   2 242    17.8 392.83
-5 0.06905  0.0  2.18    0 0.458 7.147 54.2 6.0622   3 222    18.7 396.90
-7 0.08829 12.5  7.87    0 0.524 6.012 66.6 5.5605   5 311    15.2 395.60
-8 0.14455 12.5  7.87    0 0.524 6.172 96.1 5.9505   5 311    15.2 396.90
+<pre><code>     crim   zn indus chas   nox    rm   age    dis rad tax ptratio      b
+1 0.00632 18.0  2.31    0 0.538 6.575  65.2 4.0900   1 296    15.3 396.90
+2 0.02731  0.0  7.07    0 0.469 6.421  78.9 4.9671   2 242    17.8 396.90
+5 0.06905  0.0  2.18    0 0.458 7.147  54.2 6.0622   3 222    18.7 396.90
+6 0.02985  0.0  2.18    0 0.458 6.430  58.7 6.0622   3 222    18.7 394.12
+7 0.08829 12.5  7.87    0 0.524 6.012  66.6 5.5605   5 311    15.2 395.60
+9 0.21124 12.5  7.87    0 0.524 5.631 100.0 6.0821   5 311    15.2 386.63
   lstat medv
 1  4.98 24.0
 2  9.14 21.6
-3  4.03 34.7
 5  5.33 36.2
+6  5.21 28.7
 7 12.43 22.9
-8 19.15 27.1</code></pre>
+9 29.93 16.5</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(test_data)</code></pre></div>
-<pre><code>      crim   zn indus chas   nox    rm   age    dis rad tax ptratio      b
-4  0.03237  0.0  2.18    0 0.458 6.998  45.8 6.0622   3 222    18.7 394.63
-6  0.02985  0.0  2.18    0 0.458 6.430  58.7 6.0622   3 222    18.7 394.12
-9  0.21124 12.5  7.87    0 0.524 5.631 100.0 6.0821   5 311    15.2 386.63
-10 0.17004 12.5  7.87    0 0.524 6.004  85.9 6.5921   5 311    15.2 386.71
-15 0.63796  0.0  8.14    0 0.538 6.096  84.5 4.4619   4 307    21.0 380.02
-19 0.80271  0.0  8.14    0 0.538 5.456  36.6 3.7965   4 307    21.0 288.99
+<pre><code>      crim   zn indus chas   nox    rm  age    dis rad tax ptratio      b
+3  0.02729  0.0  7.07    0 0.469 7.185 61.1 4.9671   2 242    17.8 392.83
+4  0.03237  0.0  2.18    0 0.458 6.998 45.8 6.0622   3 222    18.7 394.63
+8  0.14455 12.5  7.87    0 0.524 6.172 96.1 5.9505   5 311    15.2 396.90
+13 0.09378 12.5  7.87    0 0.524 5.889 39.0 5.4509   5 311    15.2 390.50
+15 0.63796  0.0  8.14    0 0.538 6.096 84.5 4.4619   4 307    21.0 380.02
+22 0.85204  0.0  8.14    0 0.538 5.965 89.2 4.0123   4 307    21.0 392.53
    lstat medv
+3   4.03 34.7
 4   2.94 33.4
-6   5.21 28.7
-9  29.93 16.5
-10 17.10 18.9
+8  19.15 27.1
+13 15.71 21.7
 15 10.26 18.2
-19 11.69 20.2</code></pre>
+22 13.83 19.6</code></pre>
 </div>
 <div id="fit-a-linear-regression-model-and-with-a-linear-regression-model-with-forward-selection-of-covariates-on-the-training-datasets." class="section level2">
-<h2>Fit a linear regression model and with a linear regression model with forward selection of covariates on the training datasets.</h2>
-<p>Fitting a linear model with method = leapForward on the training dataset.</p>
+<h2>2. Fit a linear regression model and with a linear regression model with forward selection of covariates on the training datasets.</h2>
+<p>Fit a linear regression model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ridge &lt;-<span class="st"> </span>caret::<span class="kw">train</span>(crim~.,
+                      <span class="dt">data =</span> train_data,
+                      <span class="dt">method=</span><span class="st">'lm'</span>,
+                      <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>)
+)
+
+<span class="kw">print</span>(ridge)</code></pre></div>
+<pre><code>Linear Regression 
+
+382 samples
+ 13 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 344, 344, 344, 343, 345, 343, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE     
+  5.513752  0.5781074  2.759108
+
+Tuning parameter 'intercept' was held constant at a value of TRUE</code></pre>
+<p>Fitting a linear model with method = leapForward on the training dataset :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lflmGrid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">nvmax=</span><span class="dv">1</span>:(<span class="kw">ncol</span>(train_data)-<span class="dv">1</span>))
 
 ridge &lt;-<span class="st"> </span>caret::<span class="kw">train</span>(crim~.,
@@ -151,69 +173,81 @@ Summary of sample sizes: 382, 382, 382, 382, 382, 382, ...
 Resampling results across tuning parameters:
 
   nvmax  RMSE      Rsquared   MAE     
-   1     5.469169  0.4804422  2.454374
-   2     5.451376  0.4914854  2.588842
-   3     5.350074  0.5133407  2.598401
-   4     5.356662  0.5133676  2.649627
-   5     5.364886  0.5138539  2.716885
-   6     5.343457  0.5192280  2.749169
-   7     5.339188  0.5208161  2.769016
-   8     5.327363  0.5236781  2.785247
-   9     5.323469  0.5254789  2.800456
-  10     5.319340  0.5263891  2.805697
-  11     5.315400  0.5272114  2.816624
-  12     5.316177  0.5270102  2.818280
-  13     5.319816  0.5263446  2.819244
+   1     6.450207  0.4226611  2.472317
+   2     6.511692  0.4148344  2.618803
+   3     6.502519  0.4161037  2.655199
+   4     6.505970  0.4169715  2.690487
+   5     6.530674  0.4137254  2.757094
+   6     6.519635  0.4164062  2.790425
+   7     6.502232  0.4195276  2.798185
+   8     6.502114  0.4192451  2.821880
+   9     6.498849  0.4196112  2.827149
+  10     6.492868  0.4213243  2.833643
+  11     6.493156  0.4211645  2.842322
+  12     6.499920  0.4202380  2.846243
+  13     6.500093  0.4201536  2.845184
 
 RMSE was used to select the optimal model using  the smallest value.
-The final value used for the model was nvmax = 11.</code></pre>
+The final value used for the model was nvmax = 1.</code></pre>
 </div>
 <div id="evaluate-the-performance-of-this-model-on-the-training-dataset." class="section level2">
-<h2>Evaluate the performance of this model on the training dataset.</h2>
-<p>since we have got a low RMSE,we think that our model has good perfomance with nvmax(number of predictors).</p>
+<h2>3. Evaluate the performance of this model on the training dataset.</h2>
+<p>Since the RMSE &amp; MAE is low on training of lm model compared to leapForward lm where model has good perfomance with nvmax(number of predictors) we can conclude that LM is better than leapforward LM.</p>
 </div>
 <div id="fit-a-ridge-regression-model-using-your-ridgereg-function-to-the-training-dataset-for-different-values-of-lambda." class="section level2">
-<h2>Fit a ridge regression model using your ridgereg() function to the training dataset for different values of lambda.</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ridge &lt;-<span class="st"> </span>lab7:::<span class="kw">ridgereg</span>(crim ~<span class="st"> </span>zn +<span class="st"> </span>indus +<span class="st"> </span>rad +<span class="st"> </span>medv,
-                  <span class="dt">data =</span> train_data,
-                  <span class="dt">lamda =</span> <span class="fl">0.1</span> 
-                  )
-              
-ridge$<span class="kw">print</span>()</code></pre></div>
-<pre><code>
-Call:
-ridgereg(formula = crim ~ zn + indus + rad + medv, data = train_data)
+<h2>4. Fit a ridge regression model using your ridgereg() function to the training dataset for different values of lambda.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ridge &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">type=</span><span class="st">&quot;Regression&quot;</span>, 
+              <span class="dt">library=</span><span class="st">&quot;lab7&quot;</span>,
+              <span class="dt">loop=</span><span class="ot">NULL</span>,
+              <span class="dt">prob=</span><span class="ot">NULL</span>)
 
-Coefficients:
-(Intercept) zn indus rad medv
-2.085054 0.01676293 0.003468796 0.5415035 -0.1781627</code></pre>
+ridge$parameters &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">parameter=</span><span class="st">&quot;lambda&quot;</span>,
+                               <span class="dt">class=</span><span class="st">&quot;numeric&quot;</span>,
+                               <span class="dt">label=</span><span class="st">&quot;lambda&quot;</span>)
+
+
+ridge$grid &lt;-<span class="st"> </span>function (x, y, <span class="dt">len =</span> <span class="ot">NULL</span>, <span class="dt">search =</span> <span class="st">&quot;grid&quot;</span>){
+  <span class="kw">data.frame</span>(<span class="dt">lambda =</span> lambda)
+} 
+
+ridge$fit &lt;-<span class="st"> </span>function (x, y, wts, param, lev, last, classProbs, ...) {
+  dat &lt;-<span class="st"> </span>if (<span class="kw">is.data.frame</span>(x)) 
+    x
+  else <span class="kw">as.data.frame</span>(x)
+  dat$.outcome &lt;-<span class="st"> </span>y
+  out &lt;-<span class="st"> </span>ridgereg$<span class="kw">new</span>(.outcome ~<span class="st"> </span>., <span class="dt">data=</span>dat ,<span class="dt">lambda =</span> param$lambda, <span class="dt">normalize=</span>normalize, ...)
+  
+  out
+}
+
+ridge$predict &lt;-<span class="st"> </span>function (modelFit, newdata, <span class="dt">submodels =</span> <span class="ot">NULL</span>) {
+  if (!<span class="kw">is.data.frame</span>(newdata)) 
+    newdata &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(newdata)
+  newdata &lt;-<span class="st"> </span><span class="kw">scale</span>(newdata)
+  modelFit$<span class="kw">predict</span>(newdata)
+}</code></pre></div>
 </div>
 <div id="find-the-best-hyperparameter-value-for-lambda-using-10-fold-cross-validation-on-the-training-set." class="section level2">
-<h2>Find the best hyperparameter value for lambda using 10-fold cross-validation on the training set.</h2>
-<p>library(mlbench)<br />
-data(“BostonHousing”)<br />
-caridge(BostonHousing)</p>
-<p>Loading required package: lars<br />
-Loaded lars 1.2</p>
-<p>Ridge Regression</p>
-<p>382 samples<br />
-13 predictor</p>
-<p>Pre-processing: centered (13), scaled (13)<br />
-Resampling: Cross-Validated (10 fold)<br />
-Summary of sample sizes: 345, 342, 343, 345, 344, 344, …<br />
-Resampling results across tuning parameters:</p>
-<p>lambda RMSE Rsquared MAE<br />
-0.00 6.580051 0.5511862 3.290037<br />
-0.01 6.568754 0.5531929 3.248552<br />
-0.02 6.564320 0.5542507 3.226374<br />
-0.03 6.563836 0.5547879 3.213642<br />
-0.04 6.565886 0.5550105 3.207268</p>
-<p>RMSE was used to select the optimal model using the smallest value.</p>
-<p>The final value used for the model was lambda = 0.03.</p>
-<p>The best value of lamda for a 10-fold cross validation can be found in the output.</p>
+<h2>5. Find the best hyperparameter value for lambda using 10-fold cross-validation on the training set.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MASS)
+fitControl &lt;-<span class="st"> </span>caret::<span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,
+                                  <span class="dt">number =</span> <span class="dv">10</span>)
+lambdaGrid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">lambda =</span> <span class="kw">c</span>(<span class="dv">0</span>,.<span class="dv">01</span>,.<span class="dv">02</span>,.<span class="dv">03</span>,.<span class="dv">04</span>))
+ridge &lt;-<span class="st"> </span>caret::<span class="kw">train</span>(crim~.,
+                      <span class="dt">data =</span> train_data,
+                      <span class="dt">method=</span><span class="st">'ridge'</span>,
+                      <span class="dt">trControl =</span> fitControl,
+                      <span class="dt">tuneGrid =</span> lambdaGrid,
+                      <span class="dt">preProcess=</span><span class="kw">c</span>(<span class="st">'center'</span>, <span class="st">'scale'</span>)
+)
+<span class="kw">predict</span>(ridge$finalModel, <span class="dt">type=</span><span class="st">'coef'</span>, <span class="dt">mode=</span><span class="st">'norm'</span>)$coefficients[<span class="dv">13</span>,]
+ridge.pred &lt;-<span class="st"> </span><span class="kw">predict</span>(ridge, test_data)
+avgErrror&lt;-<span class="dv">2</span>*<span class="kw">sqrt</span>(<span class="kw">mean</span>(ridge.pred -<span class="st"> </span>test_data$crim)^<span class="dv">2</span>)
+<span class="kw">print</span>(ridge)</code></pre></div>
+<p>So, <strong>the best hyperparameter value for lambda is 0.03</strong></p>
 </div>
 <div id="evaluate-the-performance-of-all-three-models-on-the-test-dataset." class="section level2">
-<h2>Evaluate the performance of all three models on the test dataset.</h2>
+<h2>6. Evaluate the performance of all three models on the test dataset.</h2>
 <p>By evaluating three models of</p>
 <ul>
 <li>Linear Regression</li>
